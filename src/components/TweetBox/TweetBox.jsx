@@ -5,6 +5,8 @@ import { useState } from "react";
 
 export default function TweetBox({userProfile, setTweets, tweets, tweetText, setTweetText}) {
 
+
+  const disabled = tweetText.length === 0 || tweetText.length>140
   
   function handleOnTweetTextChange (event) {
     setTweetText(event.target.value);
@@ -30,8 +32,8 @@ export default function TweetBox({userProfile, setTweets, tweets, tweetText, set
 
       <div className="tweet-box-footer">
         <TweetBoxIcons />
-        <TweetCharacterCount />
-        <TweetSubmitButton handleOnSubmit={handleOnSubmit} />
+        <TweetCharacterCount tweetText={tweetText} />
+        <TweetSubmitButton handleOnSubmit={handleOnSubmit} disabled={disabled} />
       </div>
     </div>
   );
@@ -48,16 +50,18 @@ export function TweetBoxIcons() {
   );
 }
 
-export function TweetCharacterCount(props) {
+export function TweetCharacterCount({tweetText}) {
   // ADD CODE HERE
-  return <span></span>;
+
+  const count = tweetText.length === 0 ? "": 140 -tweetText.length
+  return <span>{count}</span>;
 }
 
-export function TweetSubmitButton({ handleOnSubmit }) {
+export function TweetSubmitButton({ handleOnSubmit, disabled }) {
   return (
     <div className="tweet-submit">
       <i className="fas fa-plus-circle"></i>
-      <button className="tweet-submit-button" onClick={() => handleOnSubmit()}>
+      <button disabled = {disabled} className="tweet-submit-button" onClick={() => handleOnSubmit()}>
         Tweet
       </button>
     </div>
